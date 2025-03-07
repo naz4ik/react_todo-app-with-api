@@ -12,7 +12,7 @@ import {
 import { Header } from './components/header';
 import { TodoList } from './components/todoList';
 import { Footer } from './components/footer';
-import { Error } from './components/Error';
+import { ErrorNotification } from './components/Error';
 import { Todo } from './types/Todo';
 import { Filter } from './types/Filter';
 
@@ -71,22 +71,19 @@ export const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
-  const deleteTodo = (todoId: number) => {
+  const deleteTodo = async (todoId: number) => {
+    setIsLoading(true);
     setDeletingTodoId(todoId);
-    deleteTodos(todoId)
-      .then(() => {
-        setIsLoading(true);
-        setTodos(currentTodos =>
-          currentTodos.filter(todo => todo.id !== todoId),
-        );
-      })
-      .catch(() => {
-        setErrorMessage('Unable to delete a todo');
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setDeletingTodoId(null);
-      });
+
+    try {
+      await deleteTodos(todoId);
+      setTodos(currentTodos => currentTodos.filter(todo => todo.id !== todoId));
+    } catch (error) {
+      setErrorMessage('Unable to delete a todo');
+    } finally {
+      setIsLoading(false);
+      setDeletingTodoId(null);
+    }
   };
 
   const clearCompletedTodos = async () => {
@@ -268,7 +265,10 @@ export const App: React.FC = () => {
           clearCompletedTodos={clearCompletedTodos}
         />
       )}
-      <Error errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+      <ErrorNotification
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
     </div>
   );
 };

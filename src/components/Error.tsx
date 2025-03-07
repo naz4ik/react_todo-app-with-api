@@ -6,7 +6,10 @@ interface Props {
   setErrorMessage: (errorMessage: string) => void;
 }
 
-export const Error: React.FC<Props> = ({ errorMessage, setErrorMessage }) => {
+export const ErrorNotification: React.FC<Props> = ({
+  errorMessage,
+  setErrorMessage,
+}) => {
   const errorClass = classNames(
     'notification',
     'is-danger',
