@@ -1,6 +1,6 @@
 import React from 'react';
 import { Todo } from '../types/Todo';
-import { TodoItem } from './todo';
+import { TodoItem } from './Todo';
 
 interface TodoListProps {
   filteredTodos: Todo[];
@@ -15,7 +15,7 @@ interface TodoListProps {
   setEditingTodoId: (id: number | null) => void;
   updateTodo: (updatedTodo: Todo) => void;
   loaderUptadeTodo: number | null;
-  deletingTodoIds: number[];
+  selectTodoIds: number[];
 }
 
 export const TodoList: React.FC<TodoListProps> = ({
@@ -29,7 +29,7 @@ export const TodoList: React.FC<TodoListProps> = ({
   updateTodo,
   updateAlltodos,
   loaderUptadeTodo,
-  deletingTodoIds,
+  selectTodoIds,
 }) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
@@ -45,7 +45,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           setEditingTodoId={setEditingTodoId}
           editingTodoId={editingTodoId}
           loaderUptadeTodo={loaderUptadeTodo}
-          deletingTodoIds={deletingTodoIds}
+          selectTodoIds={selectTodoIds}
         />
       ))}
       {tempTodo && (
@@ -60,7 +60,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           setEditingTodoId={setEditingTodoId}
           editingTodoId={editingTodoId}
           loaderUptadeTodo={loaderUptadeTodo}
-          deletingTodoIds={deletingTodoIds}
+          selectTodoIds={selectTodoIds}
         />
       )}
     </section>

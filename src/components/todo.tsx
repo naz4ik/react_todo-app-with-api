@@ -13,7 +13,7 @@ interface TodoItemProps {
   updateTodo: (updatedTodo: Todo) => void;
   updateAlltodos: boolean;
   loaderUptadeTodo: number | null;
-  deletingTodoIds: number[];
+  selectTodoIds: number[];
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
@@ -26,7 +26,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   updateTodo,
   updateAlltodos,
   loaderUptadeTodo,
-  deletingTodoIds,
+  selectTodoIds,
 }) => {
   const [editedTitle, setEditedTitle] = useState(title);
 
@@ -125,7 +125,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             deletingTodoId === id ||
             updateAlltodos ||
             loaderUptadeTodo === id ||
-            deletingTodoIds.includes(id),
+            selectTodoIds.includes(id),
         })}
       >
         <div className="modal-background has-background-white-ter" />

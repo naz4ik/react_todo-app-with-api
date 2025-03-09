@@ -9,12 +9,12 @@ import {
   updateTodos,
   USER_ID,
 } from './api/todos';
-import { Header } from './components/header';
-import { TodoList } from './components/todoList';
-import { Footer } from './components/footer';
 import { ErrorNotification } from './components/Error';
 import { Todo } from './types/Todo';
 import { Filter } from './types/Filter';
+import { Footer } from './components/Footer';
+import { Header } from './components/Header';
+import { TodoList } from './components/TodoList';
 
 export const App: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -32,7 +32,7 @@ export const App: React.FC = () => {
   const [areActiveTodos, setAreActiveTodos] = useState<boolean>(false);
   const [updateAlltodos, setUptadeAllTodos] = useState<boolean>(false);
   const [loaderUptadeTodo, setLoaderUpdateTodo] = useState<number | null>(null);
-  const [deletingTodoIds, setDeletingTodoIds] = useState<number[]>([]);
+  const [selectTodoIds, setSelectTodoIds] = useState<number[]>([]);
 
   useEffect(() => {
     setAreActiveTodos(todos.some(todo => todo.completed));
@@ -89,7 +89,7 @@ export const App: React.FC = () => {
   const clearCompletedTodos = async () => {
     const completedTodos = todos.filter(todo => todo.completed);
 
-    setDeletingTodoIds(completedTodos.map(todo => todo.id));
+    setSelectTodoIds(completedTodos.map(todo => todo.id));
 
     try {
       const failedTodos: Todo[] = [];
@@ -118,7 +118,7 @@ export const App: React.FC = () => {
       setErrorMessage('Unable to delete a todo');
     } finally {
       setIsInputDisabled(false);
-      setDeletingTodoIds([]);
+      setSelectTodoIds([]);
     }
   };
 
@@ -158,24 +158,20 @@ export const App: React.FC = () => {
   };
 
   const updateTodo = async (updatedTodo: Todo) => {
-    const existingTodo = todos.find(todo => todo.id === updatedTodo.id);
-
-    if (!existingTodo || existingTodo.title === updatedTodo.title.trim()) {
-      setEditingTodoId(null);
-
-      return;
-    }
-
-    setLoaderUpdateTodo(updatedTodo.id);
     setIsLoading(true);
     setIsInputDisabled(true);
+    setLoaderUpdateTodo(updatedTodo.id);
 
     try {
-      const newUpdatedTodo = await updateTodos(updatedTodo);
+      // Оновлюємо задачу на сервері
+      await updateTodos(updatedTodo);
 
+      // Оновлюємо задачу в стані
       setTodos(prevTodos =>
         prevTodos.map(todo =>
-          todo.id === updatedTodo.id ? newUpdatedTodo : todo,
+          todo.id === updatedTodo.id
+            ? { ...todo, completed: updatedTodo.completed }
+            : todo,
         ),
       );
     } catch (error) {
@@ -252,7 +248,7 @@ export const App: React.FC = () => {
           setNewTodo={setNewTodo}
           updateTodo={updateTodo}
           loaderUptadeTodo={loaderUptadeTodo}
-          deletingTodoIds={deletingTodoIds}
+          selectTodoIds={selectTodoIds}
         />
       )}
 
