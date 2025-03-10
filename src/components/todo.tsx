@@ -7,7 +7,7 @@ interface TodoItemProps {
   deleteTodo: (todoId: number) => void;
   todo: Todo;
   isLoading: boolean;
-  deletingTodoId: number | null;
+  selectTodoId: number | null;
   editingTodoId: number | null;
   setEditingTodoId: (id: number | null) => void;
   updateTodo: (updatedTodo: Todo) => void;
@@ -20,7 +20,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   todo: { id, title, completed },
   isLoading,
   deleteTodo,
-  deletingTodoId,
+  selectTodoId,
   editingTodoId,
   setEditingTodoId,
   updateTodo,
@@ -122,7 +122,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         className={classNames('modal', 'overlay', {
           'is-active':
             (isLoading && id === 0) ||
-            deletingTodoId === id ||
+            selectTodoId === id ||
             updateAlltodos ||
             loaderUptadeTodo === id ||
             selectTodoIds.includes(id),

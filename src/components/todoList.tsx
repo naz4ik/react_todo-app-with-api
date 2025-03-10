@@ -10,7 +10,7 @@ interface TodoListProps {
   isLoading: boolean;
   deleteTodo: (todoId: number) => void;
   tempTodo: Todo | null;
-  deletingTodoId: number | null;
+  selectTodoId: number | null;
   editingTodoId: number | null;
   setEditingTodoId: (id: number | null) => void;
   updateTodo: (updatedTodo: Todo) => void;
@@ -23,7 +23,7 @@ export const TodoList: React.FC<TodoListProps> = ({
   deleteTodo,
   tempTodo,
   isLoading,
-  deletingTodoId,
+  selectTodoId,
   editingTodoId,
   setEditingTodoId,
   updateTodo,
@@ -36,7 +36,7 @@ export const TodoList: React.FC<TodoListProps> = ({
       {filteredTodos.map(todo => (
         <TodoItem
           updateTodo={updateTodo}
-          deletingTodoId={deletingTodoId}
+          selectTodoId={selectTodoId}
           deleteTodo={deleteTodo}
           key={todo.id}
           todo={todo}
@@ -52,7 +52,7 @@ export const TodoList: React.FC<TodoListProps> = ({
         <TodoItem
           updateAlltodos={updateAlltodos}
           updateTodo={updateTodo}
-          deletingTodoId={deletingTodoId}
+          selectTodoId={selectTodoId}
           key={tempTodo.id}
           todo={tempTodo}
           isLoading={isLoading}

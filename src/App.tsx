@@ -27,7 +27,7 @@ export const App: React.FC = () => {
   const [todoClear, setTodoClear] = useState<boolean>(false);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
-  const [deletingTodoId, setDeletingTodoId] = useState<number | null>(null);
+  const [selectTodoId, setSelectTodoId] = useState<number | null>(null);
   const isTodoClear = todos.some(todo => todo.completed);
   const [areActiveTodos, setAreActiveTodos] = useState<boolean>(false);
   const [updateAlltodos, setUptadeAllTodos] = useState<boolean>(false);
@@ -73,7 +73,7 @@ export const App: React.FC = () => {
 
   const deleteTodo = async (todoId: number) => {
     setIsLoading(true);
-    setDeletingTodoId(todoId);
+    setSelectTodoId(todoId);
 
     try {
       await deleteTodos(todoId);
@@ -82,7 +82,7 @@ export const App: React.FC = () => {
       setErrorMessage('Unable to delete a todo');
     } finally {
       setIsLoading(false);
-      setDeletingTodoId(null);
+      setSelectTodoId(null);
     }
   };
 
@@ -243,7 +243,7 @@ export const App: React.FC = () => {
           isLoading={isLoading}
           deleteTodo={deleteTodo}
           tempTodo={tempTodo}
-          deletingTodoId={deletingTodoId}
+          selectTodoId={selectTodoId}
           newTodo={newTodo}
           setNewTodo={setNewTodo}
           updateTodo={updateTodo}
