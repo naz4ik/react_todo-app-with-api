@@ -11,7 +11,6 @@ interface TodoItemProps {
   editingTodoId: number | null;
   setEditingTodoId: (id: number | null) => void;
   updateTodo: (updatedTodo: Todo) => void;
-  updateAlltodos: boolean;
   loaderUptadeTodo: number | null;
   selectTodoIds: number[];
 }
@@ -24,7 +23,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   editingTodoId,
   setEditingTodoId,
   updateTodo,
-  updateAlltodos,
   loaderUptadeTodo,
   selectTodoIds,
 }) => {
@@ -123,7 +121,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           'is-active':
             (isLoading && id === 0) ||
             selectTodoId === id ||
-            updateAlltodos ||
             loaderUptadeTodo === id ||
             selectTodoIds.includes(id),
         })}

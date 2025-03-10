@@ -4,7 +4,6 @@ import { TodoItem } from './Todo';
 
 interface TodoListProps {
   filteredTodos: Todo[];
-  updateAlltodos: boolean;
   newTodo: string;
   setNewTodo: (newTodo: string) => void;
   isLoading: boolean;
@@ -27,7 +26,6 @@ export const TodoList: React.FC<TodoListProps> = ({
   editingTodoId,
   setEditingTodoId,
   updateTodo,
-  updateAlltodos,
   loaderUptadeTodo,
   selectTodoIds,
 }) => {
@@ -40,7 +38,6 @@ export const TodoList: React.FC<TodoListProps> = ({
           deleteTodo={deleteTodo}
           key={todo.id}
           todo={todo}
-          updateAlltodos={updateAlltodos}
           isLoading={isLoading}
           setEditingTodoId={setEditingTodoId}
           editingTodoId={editingTodoId}
@@ -50,7 +47,6 @@ export const TodoList: React.FC<TodoListProps> = ({
       ))}
       {tempTodo && (
         <TodoItem
-          updateAlltodos={updateAlltodos}
           updateTodo={updateTodo}
           selectTodoId={selectTodoId}
           key={tempTodo.id}

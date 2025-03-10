@@ -30,7 +30,6 @@ export const App: React.FC = () => {
   const [selectTodoId, setSelectTodoId] = useState<number | null>(null);
   const isTodoClear = todos.some(todo => todo.completed);
   const [areActiveTodos, setAreActiveTodos] = useState<boolean>(false);
-  const [updateAlltodos, setUptadeAllTodos] = useState<boolean>(false);
   const [loaderUptadeTodo, setLoaderUpdateTodo] = useState<number | null>(null);
   const [selectTodoIds, setSelectTodoIds] = useState<number[]>([]);
 
@@ -184,25 +183,42 @@ export const App: React.FC = () => {
   };
 
   const onToggleAll = async () => {
-    setTodos(prevTodos => {
-      const areAllCompleted = !prevTodos.every(todo => todo.completed);
+    const areAllCompleted = !todos.every(todo => todo.completed);
+    const todosToUpdate = todos.filter(
+      todo => todo.completed !== areAllCompleted,
+    );
 
-      return prevTodos.map(todo => ({
-        ...todo,
-        completed: !areAllCompleted,
-      }));
-    });
-    setUptadeAllTodos(true);
+    setSelectTodoIds(todosToUpdate.map(todo => todo.id));
+
     try {
-      await Promise.all(
-        todos.map(todo =>
-          updateTodo({ ...todo, completed: !todos.every(t => t.completed) }),
-        ),
+      const failedTodos: Todo[] = [];
+      const updatePromises = todosToUpdate.map(async todo => {
+        try {
+          await updateTodo({ ...todo, completed: areAllCompleted });
+        } catch (error) {
+          setErrorMessage('Unable to update a todo');
+          failedTodos.push(todo);
+        }
+      });
+
+      await Promise.all(updatePromises);
+      setTodos(prevTodos =>
+        prevTodos.map(todo => {
+          if (todosToUpdate.includes(todo)) {
+            return { ...todo, completed: areAllCompleted };
+          }
+
+          return todo;
+        }),
       );
+
+      if (failedTodos.length > 0) {
+        setTodos(prevTodos => [...prevTodos, ...failedTodos]);
+      }
     } catch (error) {
       setErrorMessage('Unable to update all todos');
     } finally {
-      setUptadeAllTodos(false);
+      setSelectTodoIds([]);
     }
   };
 
@@ -238,7 +254,6 @@ export const App: React.FC = () => {
         <TodoList
           filteredTodos={filteredTodos}
           editingTodoId={editingTodoId}
-          updateAlltodos={updateAlltodos}
           setEditingTodoId={setEditingTodoId}
           isLoading={isLoading}
           deleteTodo={deleteTodo}
