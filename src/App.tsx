@@ -28,13 +28,13 @@ export const App: React.FC = () => {
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [selectTodoId, setSelectTodoId] = useState<number | null>(null);
-  const isTodoClear = todos.some(todo => todo.completed);
   const [areActiveTodos, setAreActiveTodos] = useState<boolean>(false);
   const [loaderUptadeTodo, setLoaderUpdateTodo] = useState<number | null>(null);
   const [selectTodoIds, setSelectTodoIds] = useState<number[]>([]);
+  const hasActiveTodos = todos.some(todo => todo.completed);
 
   useEffect(() => {
-    setAreActiveTodos(todos.some(todo => todo.completed));
+    setAreActiveTodos(hasActiveTodos);
   }, [todos]);
 
   const loadTodos = async () => {
@@ -59,8 +59,8 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setTodoClear(isTodoClear);
-  }, [isTodoClear]);
+    setTodoClear(hasActiveTodos);
+  }, [hasActiveTodos]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
