@@ -1,13 +1,14 @@
 import React from 'react';
 import { Filter } from '../types/Filter';
 import classNames from 'classnames';
+import { Todo } from '../types/Todo';
 
 interface Props {
   clearCompletedTodos: () => Promise<void>;
   todoClear: boolean;
   newFilter: Filter;
   setNewFilter: (newFilter: Filter) => void;
-  todosLeft: number;
+  todos: Todo[];
 }
 
 export const Footer: React.FC<Props> = ({
@@ -15,13 +16,13 @@ export const Footer: React.FC<Props> = ({
   todoClear,
   newFilter,
   setNewFilter,
-  todosLeft,
+  todos,
 }) => {
   return (
     <div className="todoapp__content">
       <footer className="todoapp__footer" data-cy="Footer">
         <span className="todo-count" data-cy="TodosCounter">
-          {todosLeft} items left
+          {todos.filter(todo => !todo.completed).length} items left
         </span>
         <nav className="filter" data-cy="Filter">
           {Object.values(Filter).map(filter => (

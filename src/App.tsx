@@ -22,7 +22,6 @@ export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newFilter, setNewFilter] = useState<Filter>(Filter.All);
   const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
-  const todosLeft = todos.filter(todo => !todo.completed).length;
   const [isLoading, setIsLoading] = useState(false);
   const [todoClear, setTodoClear] = useState<boolean>(false);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
@@ -35,7 +34,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     setAreActiveTodos(hasActiveTodos);
-  }, [todos]);
+  }, [todos, hasActiveTodos]);
 
   const loadTodos = async () => {
     setIsLoading(true);
@@ -270,9 +269,9 @@ export const App: React.FC = () => {
       {todos.length > 0 && (
         <Footer
           todoClear={todoClear}
+          todos={todos}
           newFilter={newFilter}
           setNewFilter={setNewFilter}
-          todosLeft={todosLeft}
           clearCompletedTodos={clearCompletedTodos}
         />
       )}
